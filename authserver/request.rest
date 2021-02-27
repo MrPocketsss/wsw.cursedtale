@@ -1,0 +1,39 @@
+POST http://www.linearautho.xyz/auth/signup
+Content-Type: application/json
+
+{
+  "email": "jrichardson@linear-systems.com",
+  "password": "l1n3@r-jR",
+  "role": "ADMIN"
+}
+
+###
+
+POST http://www.linearautho.xyz/auth/signin
+Content-Type: application/json
+
+{
+  "email": "jrichardson@linear-systems.com",
+  "password": "L1n3@r-jR"
+}
+
+###
+
+DELETE http://www.linearautho.xyz/auth/signOut
+Content-Type: application/json
+
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpyaWNoYXJkc29uQGxpbmVhci1zeXN0ZW1zLmNvbSIsInJvbGUiOiJCQVNJQyIsInJlZnJlc2hJZCI6ImNrbGg3dXYwMzAwMDAwdm81YWQ4aGNtcXIiLCJpYXQiOjE2MTQwMzY4MzN9.-rLBz1_hbf5UYbXxWuskNIFo_xj00UbRWQEETIijIBI"
+}
+
+###
+
+POST http://www.linearautho.xyz/auth/refresh
+Content-Type: application/json
+
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpyaWNoYXJkc29uQGxpbmVhci1zeXN0ZW1zLmNvbSIsInJvbGUiOiJCQVNJQyIsInJlZnJlc2hJZCI6ImNrbGg3dXYwMzAwMDAwdm81YWQ4aGNtcXIiLCJpYXQiOjE2MTQwMzY4MzN9.-rLBz1_hbf5UYbXxWuskNIFo_xj00UbRWQEETIijIBI"
+}
+
+###
+
