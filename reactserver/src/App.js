@@ -1,74 +1,97 @@
-// import react libraries
-import React, { useEffect, useState } from 'react';
+// import react
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-// import modules
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { ThemeProvider } from '@material-ui/core/styles';
-import { CircularProgress, CssBaseline, Typography } from '@material-ui/core';
+//import redux
 import { useSelector } from 'react-redux';
 
+// import material-ui
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { deepPurple, blue, grey } from '@material-ui/core/colors';
+import { CssBaseline } from '@material-ui/core';
+
 // import project files
-import useDarkMode from './hooks/useDarkMode';
-import './App.css';
-import Dashboard from './features/clients';
-import AddClient from './features/clients/pages/AddClient';
-import { SignIn, SignUp, ForgotPassword, PrivateRoute } from './features/auth';
-import { Header, Navbar } from './components/organisms';
+import { selectLights } from './features/user/userSlice';
+import Header from './features/common/header/Header';
+import OrderTracker from './features/tracker/OrderTracker';
+import SignUp from './features/authentication/SignUp';
+import SignIn from './features/authentication/SignIn';
+import PrivateRoute from './features/authentication/PrivateRoute';
+import ForgotPassword from './features/authentication/ForgotPassword';
+import { AuthProvider } from './contexts/AuthContext';
 
-export default function App() {
-  const [theme, toggleDarkTheme] = useDarkMode();
-  const currentUser = useSelector((state) => state.auth.currentUser);
-  const [display, setDisplay] = useState(false);
-
-  useEffect(() => {
-    setDisplay(currentUser ? true : false);
-
-    const timer = setTimeout(() => {
-      if (!currentUser) setDisplay(true);
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, [currentUser]);
+function App() {
+  // Creating the theme
+  const paletteType = useSelector(selectLights);
+  const light = grey[50];
+  const dark = grey[900];
+  const primary = blue[800];
+  const secondary = deepPurple[700];
+  const theme = createMuiTheme({
+    themeName: 'Adaptive Dark and Light',
+    overrides: {
+      MuiFormLabel: {
+        root: {
+          color: '#999999',
+          '&$focused': {
+            color: blue[400],
+          },
+        },
+      },
+    },
+    palette: {
+      type: paletteType ? 'dark' : 'light',
+      primary: {
+        main: primary,
+      },
+      secondary: {
+        main: secondary,
+      },
+    },
+    typography: {
+      useNextVariants: true,
+      fontFamily: [
+        'Roboto',
+        'Lato',
+        '"Helvetica Neue"',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+      body1: {
+        fontSize: '1.25rem',
+        fontWeight: 300,
+        color: paletteType ? light : dark,
+      },
+      subtitle1: {
+        fontSize: '1.25rem',
+        fontWeight: 500,
+        color: grey[500],
+      },
+    },
+  });
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <div className='app'>
-        {display ? null : (
-          <div className='loading'>
-            <CircularProgress />
-            <Typography component='h5'>
-              Getting Things ready, please wait
-            </Typography>
-          </div>
-        )}
-        <Router>
-          {currentUser && <Navbar toggleTheme={toggleDarkTheme} />}
+      <Header />
+      <Router>
+        <AuthProvider>
           <Switch>
-            <Route path='/signin' component={SignIn} />
-            <Route path='/forgot' component={ForgotPassword} />
-            <PrivateRoute
-              path='/signup'
-              currentUser={currentUser}
-              accessLevel='ADMIN'
-              component={SignUp}
-            />
-            <PrivateRoute
-              path='/create-agency'
-              currentUser={currentUser}
-              accessLevel='BASIC'
-              component={AddClient}
-            />
-            <PrivateRoute
-              exact
-              path='/'
-              currentUser={currentUser}
-              accessLevel='BASIC'
-              component={Dashboard}
-            />
+            <PrivateRoute exact path='/' component={OrderTracker} />
+            <Route path='/signup' component={SignUp} />
+            <Route path='/login' component={SignIn} />
+            <Route path='/forgot-password' component={ForgotPassword} />
           </Switch>
-        </Router>
-      </div>
+        </AuthProvider>
+      </Router>
     </ThemeProvider>
   );
 }
+
+export default App;

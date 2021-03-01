@@ -1,24 +1,12 @@
-// import modules
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
+import counterReducer from '../features/counter/counterSlice';
+import userReducer from '../features/user/userSlice';
+import orderReducer from '../features/tracker/orderSlice';
 
-// import project files
-import { persistToken } from './authMiddleware';
-import authReducer from '../features/auth/authSlice';
-import clientReducer from '../features/clients/clientSlice';
-
-const store = configureStore({
+export default configureStore({
   reducer: {
-    auth: authReducer,
-    clients: clientReducer,
+    counter: counterReducer,
+    user: userReducer,
+    orders: orderReducer,
   },
-  middleware: [persistToken, ...getDefaultMiddleware()],
 });
-
-store.subscribe(() => {
-  localStorage.setItem(
-    'USER',
-    JSON.stringify(store.getState().auth.currentUser)
-  );
-});
-
-export default store;
