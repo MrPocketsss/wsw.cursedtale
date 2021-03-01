@@ -30,20 +30,44 @@ services:
   #    - ./env/apiserver.env
   #  depends_on:
   #    - authserver
-  nginx:
-    build: ./nginx
-    ports:
-      - '80:80'
-      - '443:443'
-    restart: 'always'
-    depends_on:
-      - authserver
   reactserver:
     build: ./reactserver
+    volumes:
+      - web-root:/usr/share/nginx/html
+  nginx:
+    image: nginx:mainline-alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - '80:80'
+    volumes:
+      - web-root:/usr/share/nginx/html
+      - ./nginx:/etc/nginx/conf.d
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrpyt
+    depends_on:
+      - authserver
+      - reactserver
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/usr/share/nginx/html
     depends_on:
       - nginx
+    command: certonly --webroot --webroot-path=/usr/share/nginx/html --email josh@cursedtale.com --agree-tos --no-eff-email --force-ren>
 
 volumes:
+  certbot-etc:
+  certbot-var:
   data:
   #  apiLogs:
   authLogs:
+  web-root:
+    driver: local
+    driver_opts:
+      type: none
+      device: /usr/wsw/reactserver/nginx
+      o: bind

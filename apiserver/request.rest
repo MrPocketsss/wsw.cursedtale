@@ -1,0 +1,39 @@
+POST http://www.cursedtale.com/auth/bootstrap
+Content-Type: application/json
+
+{
+  "email": "josh@cursedtale.com",
+  "password": "Dr4g0n&orn",
+  "role": "ADMIN"
+}
+
+###
+
+POST http://www.cursedtale.com/auth/signin
+Content-Type: application/json
+
+{
+  "email": "jrichardson@linear-systems.com",
+  "password": "L1n3@r-jR"
+}
+
+###
+
+DELETE http://www.cursedtale.com/auth/signOut
+Content-Type: application/json
+
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpyaWNoYXJkc29uQGxpbmVhci1zeXN0ZW1zLmNvbSIsInJvbGUiOiJCQVNJQyIsInJlZnJlc2hJZCI6ImNrbGg3dXYwMzAwMDAwdm81YWQ4aGNtcXIiLCJpYXQiOjE2MTQwMzY4MzN9.-rLBz1_hbf5UYbXxWuskNIFo_xj00UbRWQEETIijIBI"
+}
+
+###
+
+POST http://www.cursedtale.com/auth/refresh
+Content-Type: application/json
+
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpyaWNoYXJkc29uQGxpbmVhci1zeXN0ZW1zLmNvbSIsInJvbGUiOiJCQVNJQyIsInJlZnJlc2hJZCI6ImNrbGg3dXYwMzAwMDAwdm81YWQ4aGNtcXIiLCJpYXQiOjE2MTQwMzY4MzN9.-rLBz1_hbf5UYbXxWuskNIFo_xj00UbRWQEETIijIBI"
+}
+
+###
+

@@ -2,6 +2,6 @@ FROM node
 WORKDIR /app
 COPY package.json .
 RUN yarn install
-COPY --chown=node:node . .
+COPY . .
 EXPOSE 80
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
